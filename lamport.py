@@ -1,3 +1,4 @@
+import matplotlib.pyplot as plt
 import channel
 import itertools
 import threading
@@ -82,9 +83,9 @@ def spawn(fs):
             arm.done()
         threading.Thread(target=wrapper, args=(arm,)).start()
 
-    threading.Thread(target=printer, args=(len(fs), printer_rx)).start()
+    return lambda: plotter(len(fs), printer_rx)
 
-def printer(num_threads, printer_rx):
+def get_events(num_threads, printer_rx):
     events = []
     num_done = 0
 
@@ -96,7 +97,39 @@ def printer(num_threads, printer_rx):
         else:
             events.append(event)
 
-    #print events
+    return events
+
+def plotter(num_threads, printer_rx):
+    events = get_events(num_threads, printer_rx)
+    m = max(events, key=lambda e: e.timestamp).timestamp
+
+
+    events = sorted(events, key=lambda e: e.timestamp)
+    while len(events) > 0:
+        e = events.pop(0)
+        if type(e) is Local:
+            plt.scatter([e.src], [e.timestamp])
+        elif type(e) is Sent:
+            (x0, y0) = (e.src, e.timestamp)
+            x = next(x for x in events if type(x) is Received and x.dst == e.dst)
+            (x1, y1)  = (x.dst, x.timestamp)
+            plt.scatter([x0, x1], [y0, y1])
+            plt.plot([x0, x1], [y0, y1])
+            events.remove(x)
+        else:
+            pass
+
+    for i in range(m + 1):
+        plt.plot([0, num_threads - 1], [i, i], "k--")
+
+    for i in range(num_threads):
+        plt.plot([i, i], [0, m], "k")
+
+    plt.savefig("plot.svg")
+
+
+def printer(num_threads, printer_rx):
+    events = get_events(num_threads, printer_rx)
     m = max(events, key=lambda e: e.timestamp).timestamp
     print "   " + "".join(" {} ".format(i) for i in range(num_threads))
 

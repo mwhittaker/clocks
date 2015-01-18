@@ -23,7 +23,7 @@ def h(arm):
     arm.recv(1)
 
 def main():
-    lamport.spawn([f, g, h])
+    lamport.spawn([f, g, h])()
 
 if __name__ == "__main__":
     main()
