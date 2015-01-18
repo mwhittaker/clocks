@@ -1,29 +1,29 @@
 import lamport
 
-def f(arm):
-    arm.send(1)
-    arm.recv(1)
-    arm.local()
-    arm.recv(1)
+def f(clock):
+    clock.send(1)
+    clock.recv(1)
+    clock.local()
+    clock.recv(1)
 
-def g(arm):
-    arm.send(0)
-    arm.send(2)
-    arm.recv(0)
-    arm.local()
-    arm.send(2)
-    arm.send(0)
-    arm.local()
-    arm.recv(2)
+def g(clock):
+    clock.send(0)
+    clock.send(2)
+    clock.recv(0)
+    clock.local()
+    clock.send(2)
+    clock.send(0)
+    clock.local()
+    clock.recv(2)
 
-def h(arm):
-    arm.local()
-    arm.send(1)
-    arm.recv(1)
-    arm.recv(1)
+def h(clock):
+    clock.local()
+    clock.send(1)
+    clock.recv(1)
+    clock.recv(1)
 
 def main():
-    lamport.spawn([f, g, h])()
+    lamport.wind([f, g, h])()
 
 if __name__ == "__main__":
     main()

@@ -1,6 +1,7 @@
 import threading
 
 class AQueue(object):
+    """Asynchronous Queue"""
     def __init__(self):
         self.lock           = threading.Lock()
         self.data_available = threading.Condition(self.lock)
