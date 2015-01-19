@@ -23,7 +23,7 @@ def h(clock):
     clock.recv(1)
 
 def main():
-    lamport.wind([f, g, h])()
+    lamport.wind([f, g, h], "clock.png")()
 
 if __name__ == "__main__":
     main()
