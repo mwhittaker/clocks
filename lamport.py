@@ -1,8 +1,10 @@
-import matplotlib.pyplot as plt
 import channel
+import math
 import itertools
-import threading
+import matplotlib.pyplot as plt
+import string
 import sys
+import threading
 
 class Event(object):
     """
@@ -135,6 +137,24 @@ def plot(num_threads, shower_rx, plotname):
     events = sorted(events, key=lambda e: e.timestamp)
     max_timestamp = events[-1].timestamp
 
+    # horizontal lines
+    for i in range(max_timestamp + 1):
+        plt.plot([0, num_threads - 1], [i, i], "k--")
+
+    # vertical lines
+    for i in range(num_threads):
+        plt.plot([i, i], [-0.5, max_timestamp + 0.5], "k")
+
+    # thread labels
+    for i in range(num_threads):
+        plt.text(i, max_timestamp + 2, "process ${}$".format(string.letters[i]), rotation="vertical", horizontalalignment="center")
+
+    # event labels
+    for i in range(num_threads):
+        for (j, e) in enumerate(filter(lambda e: e.owner == i, events)):
+            plt.text(e.owner - 0.1, e.timestamp, "${}_{}$".format(string.letters[i], j))
+
+    # events
     while len(events) > 0:
         e = events.pop(0)
 
@@ -150,14 +170,6 @@ def plot(num_threads, shower_rx, plotname):
             events.remove(r)
         else:
             pass
-
-    # horizontal lines
-    for i in range(max_timestamp + 1):
-        plt.plot([0, num_threads - 1], [i, i], "k--")
-
-    # vertical lines
-    for i in range(num_threads):
-        plt.plot([i, i], [-0.5, max_timestamp + 0.5], "k")
 
     plt.axis("off")
     plt.savefig(plotname, bbox_inches="tight")
