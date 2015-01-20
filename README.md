@@ -1,5 +1,5 @@
 # Clocks #
-An implementation of [Lamport timestamps](lamport).
+An implementation of [Lamport timestamps][lamport].
 
 | `python main.py`   | Lamport's paper     |
 | ------------------ | ------------------- |
