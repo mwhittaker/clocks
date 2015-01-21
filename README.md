@@ -1,5 +1,6 @@
 # Clocks #
-An implementation of [Lamport timestamps][lamport].
+An implementation of [Lamport timestamps][lamport] and [corresponding blog
+post](http://mwhittaker.github.io/2015/01/20/logical-clocks/).
 
 | `python main.py`   | Lamport's paper     |
 | ------------------ | ------------------- |
