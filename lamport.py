@@ -138,8 +138,8 @@ def plot(num_threads, shower_rx, plotname):
     max_timestamp = events[-1].timestamp
 
     # horizontal lines
-    for i in range(max_timestamp + 1):
-        plt.plot([0, num_threads - 1], [i, i], "k--")
+    for i in range(max_timestamp):
+        plt.plot([0, num_threads - 1], [i + 0.5, i + 0.5], "k--")
 
     # vertical lines
     for i in range(num_threads):
