@@ -147,12 +147,12 @@ def plot(num_threads, shower_rx, plotname):
 
     # thread labels
     for i in range(num_threads):
-        plt.text(i, max_timestamp + 2, "process ${}$".format(string.letters[i]), rotation="vertical", horizontalalignment="center")
+        plt.text(i, max_timestamp + 2, "process ${}$".format(string.ascii_lowercase[i]), rotation="vertical", horizontalalignment="center")
 
     # event labels
     for i in range(num_threads):
         for (j, e) in enumerate(filter(lambda e: e.owner == i, events)):
-            plt.text(e.owner - 0.1, e.timestamp, "${}_{}$".format(string.letters[i], j))
+            plt.text(e.owner - 0.1, e.timestamp, "${}_{}$".format(string.ascii_lowercase[i], j))
 
     # events
     while len(events) > 0:
